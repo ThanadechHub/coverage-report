@@ -51,13 +51,13 @@ pipeline {
             dir("${env.WORKSPACE}/Ch05/05_02-publish-reports"){
                 sh 'venv/bin/coverage xml'
             }
-
-            junit allowEmptyResults: true, testResults: '**/pytest_junit.xml'
-
-            junit allowEmptyResults: true, testResults: '**/pylint_junit.xml'
-
-            publishCoverage adapters: [cobertura('**/coverage.xml')],
-                sourceFileResolver: sourceFiles('STORE_LAST_BUILD')
+    
+            junit allowEmptyResults: true, 
+                  testResults: '**/pytest_junit.xml'
+    
+            recordCoverage(
+                tools: [[parser: 'COBERTURA', pattern: '**/coverage.xml']]
+            )
         }
     }
 }
